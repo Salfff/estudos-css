@@ -1,16 +1,16 @@
 const span = document.querySelector('.span');
 
-const container = document.querySelector('.animacao');
+const container = document.querySelector('#animacao');
 
 
 let positionX = 0; // Posição inicial
 let positionY = 0; // Posição inicial
-const step =50; // Quantos pixels mover a cada tecla
+const step = 1; // Quantos pixels mover a cada tecla
 
 // Aplica a posição inicial
 span.style.position = 'relative';
-span.style.left = positionX + 'px';
-span.style.top = positionY + 'px';
+span.style.right = positionX + 'px';
+span.style.down = positionY + 'px';
 
 document.addEventListener('keydown', function (event) {
     const containerRect = container.getBoundingClientRect();
@@ -23,16 +23,16 @@ document.addEventListener('keydown', function (event) {
 
      switch (event.key) {
         case 'ArrowRight':
-            if (positionX + step <= maxX) positionX += step;
+            positionX = Math.min(positionX + step, maxX);
             break;
         case 'ArrowLeft':
-            if (positionX - step >= 0) positionX -= step;
+            positionX = Math.max(positionX - step, 0);
             break;
         case 'ArrowDown':
-            if (positionY + step <= maxY) positionY += step;
+            positionY = Math.min(positionY + step, maxY);
             break;
         case 'ArrowUp':
-            if (positionY - step >= 0) positionY -= step;
+            positionY = Math.max(positionY - step, 0);
             break;
     }
 
