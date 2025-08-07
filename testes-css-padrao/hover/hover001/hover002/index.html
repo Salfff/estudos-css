@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    font-family: sans-serif;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cursor-follower {
+    position: fixed; /* Para que siga a tela inteira */
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 123, 255, 0.5) 0%, rgba(0, 123, 255, 0) 70%);
+    transform: translate(-50%, -50%); /* Centraliza o elemento no cursor */
+    pointer-events: none; /* Permite que o mouse interaja com elementos abaixo */
+    z-index: 1; /* Fica sobre os outros elementos do conteúdo */
+    opacity: 0.8;
+    transition: background 1s ease-out; /* Suaviza a mudança de cor */
+}
+
+h1 {
+    position: relative;
+    z-index: 2; /* Fica sobre o seguidor de cursor */
+    color: white;
+    font-size: 4em;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="cursor-follower"></div>
+        <h1>Passe o mouse aqui!</h1>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+<script>
+const cursorFollower = document.querySelector('.cursor-follower');
+
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let currentX = mouseX;
+let currentY = mouseY;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
+
+function animate() {
+    // Interpolação suave
+    const speed = 0.1; // quanto menor, mais lento e mais "rastro"
+    currentX += (mouseX - currentX) * speed;
+    currentY += (mouseY - currentY) * speed;
+
+    // Atualiza a posição
+    cursorFollower.style.left = `${currentX}px`;
+    cursorFollower.style.top = `${currentY}px`;
+
+    // Calcula cor baseada na posição horizontal
+    const r = Math.floor(255 - (currentX / window.innerWidth) * 255);
+    const g = 50;
+    const b = Math.floor((currentX / window.innerWidth) * 255);
+
+    const gradientColor = `radial-gradient(circle, rgba(${r}, ${g}, ${b}, 0.5) 0%, rgba(0, 123, 255, 0) 70%)`;
+    cursorFollower.style.background = gradientColor;
+
+    requestAnimationFrame(animate);
+}
+
+// Inicia a animação
+animate();
+</script>
+</html>
